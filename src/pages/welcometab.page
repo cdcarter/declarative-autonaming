@@ -1,3 +1,0 @@
-<apex:page showHeader="true" sidebar="false" tabStyle="Welcome__tab">
-	<apex:include pageName="{!$Page.welcome}"/>	
-</apex:page>

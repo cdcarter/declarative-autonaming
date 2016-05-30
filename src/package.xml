@@ -3,213 +3,25 @@
     <fullName>Declarative Autonaming</fullName>
     <packageType>UNMANAGED</packageType>
     <types>
-        <members>ApexClassesSelector</members>
-        <members>ApexTriggersSelector</members>
-        <members>AsyncApexJobsSelector</members>
-        <members>CustomMetadataService</members>
-        <members>CustomMetadataServiceTest</members>
-        <members>LREngine</members>
-        <members>ManageLookupRollupSummariesController</members>
-        <members>MetadataService</members>
-        <members>MetadataServiceTest</members>
-        <members>RollupActionCalculate</members>
-        <members>RollupActionCalculateTest</members>
-        <members>RollupCalculateController</members>
-        <members>RollupCalculateJob</members>
-        <members>RollupCalculateJobSchedulable</members>
-        <members>RollupController</members>
-        <members>RollupControllerTest</members>
-        <members>RollupJob</members>
-        <members>RollupJobTest</members>
-        <members>RollupScheduledCalculateController</members>
-        <members>RollupService</members>
-        <members>RollupServiceException</members>
-        <members>RollupServiceTest</members>
-        <members>RollupSummaries</members>
-        <members>RollupSummariesSelector</members>
-        <members>RollupSummariesTest</members>
-        <members>RollupSummary</members>
-        <members>RollupSummaryScheduleItemsSelector</members>
-        <members>TestContext</members>
-        <members>TestLREngine</members>
-        <members>Utilities</members>
-        <members>WelcomeController</members>
-        <members>WelcomeControllerTest</members>
-        <members>fflib_ApexMocks</members>
-        <members>fflib_ApexMocksTest</members>
-        <members>fflib_Application</members>
-        <members>fflib_IDGenerator</members>
-        <members>fflib_IDGeneratorTest</members>
-        <members>fflib_ISObjectDomain</members>
-        <members>fflib_ISObjectSelector</members>
-        <members>fflib_ISObjectUnitOfWork</members>
-        <members>fflib_MethodCountRecorder</members>
-        <members>fflib_MethodReturnValue</members>
-        <members>fflib_MethodReturnValueRecorder</members>
-        <members>fflib_Mocks</members>
-        <members>fflib_MyList</members>
-        <members>fflib_QueryFactory</members>
-        <members>fflib_QueryFactoryTest</members>
-        <members>fflib_SObjectDescribe</members>
-        <members>fflib_SObjectDescribeTest</members>
-        <members>fflib_SObjectDomain</members>
-        <members>fflib_SObjectDomainTest</members>
-        <members>fflib_SObjectMocks</members>
-        <members>fflib_SObjectSelector</members>
-        <members>fflib_SObjectSelectorTest</members>
-        <members>fflib_SObjectUnitOfWork</members>
-        <members>fflib_SObjectUnitOfWorkTest</members>
-        <members>fflib_SecurityUtils</members>
-        <members>fflib_SecurityUtilsTest</members>
-        <members>fflib_StringBuilder</members>
-        <members>fflib_StringBuilderTest</members>
+        <members>DAN</members>
+        <members>DAN_NameSpec</members>
         <name>ApexClass</name>
     </types>
     <types>
-        <members>zip</members>
-        <members>zipEntry</members>
-        <name>ApexComponent</name>
-    </types>
-    <types>
-        <members>managelookuprollupsummaries</members>
-        <members>managetriggermdt</members>
-        <members>rollupcalculatemdt</members>
-        <members>rollupscheduledcalculatemdt</members>
-        <members>welcome</members>
-        <members>welcometab</members>
-        <name>ApexPage</name>
-    </types>
-    <types>
-        <members>RollupServiceTest3Trigger</members>
-        <members>RollupServiceTest4Trigger</members>
-        <members>RollupServiceTestTrigger</members>
-        <name>ApexTrigger</name>
-    </types>
-    <types>
-        <members>DeclarativeLookupRollupSummaries</members>
-        <name>CustomApplication</name>
-    </types>
-    <types>
-        <members>DeclarativeLookupRollupSummaries__c.CalculateJobScopeSize__c</members>
-        <members>DeclarativeLookupRollupSummaries__c.HideManageLookupRollupSummariesInfo__c</members>
-        <members>DeclarativeLookupRollupSummaries__c.ScheduledJobScopeSize__c</members>
-        <members>LookupChild__c.Amount__c</members>
-        <members>LookupChild__c.Color__c</members>
-        <members>LookupChild__c.Description2__c</members>
-        <members>LookupChild__c.Description__c</members>
-        <members>LookupChild__c.LookupParent2__c</members>
-        <members>LookupChild__c.LookupParent__c</members>
-        <members>LookupParent__c.Colours__c</members>
-        <members>LookupParent__c.Descriptions2__c</members>
-        <members>LookupParent__c.Descriptions__c</members>
-        <members>LookupParent__c.Total2__c</members>
-        <members>LookupParent__c.Total__c</members>
-        <members>LookupRollupCalculateJob__c.LookupRollupSummaryId__c</members>
-        <members>LookupRollupSummary2__mdt.Active__c</members>
-        <members>LookupRollupSummary2__mdt.AggregateOperation__c</members>
-        <members>LookupRollupSummary2__mdt.AggregateResultField__c</members>
-        <members>LookupRollupSummary2__mdt.CalculationMode__c</members>
-        <members>LookupRollupSummary2__mdt.CalculationSharingMode__c</members>
-        <members>LookupRollupSummary2__mdt.ChildObject__c</members>
-        <members>LookupRollupSummary2__mdt.ConcatenateDelimiter__c</members>
-        <members>LookupRollupSummary2__mdt.Description__c</members>
-        <members>LookupRollupSummary2__mdt.FieldToAggregate__c</members>
-        <members>LookupRollupSummary2__mdt.FieldToOrderBy__c</members>
-        <members>LookupRollupSummary2__mdt.ParentObject__c</members>
-        <members>LookupRollupSummary2__mdt.RelationshipCriteriaFields__c</members>
-        <members>LookupRollupSummary2__mdt.RelationshipCriteria__c</members>
-        <members>LookupRollupSummary2__mdt.RelationshipField__c</members>
-        <members>LookupRollupSummary2__mdt.TestCodeSeeAllData__c</members>
-        <members>LookupRollupSummary2__mdt.TestCode__c</members>
-        <members>LookupRollupSummaryLog__c.ErrorMessage__c</members>
-        <members>LookupRollupSummaryLog__c.ParentId__c</members>
-        <members>LookupRollupSummaryLog__c.ParentObject__c</members>
-        <members>LookupRollupSummaryLog__c.ParentRecord__c</members>
-        <members>LookupRollupSummaryScheduleItems__c.LookupRollupSummary2__c</members>
-        <members>LookupRollupSummaryScheduleItems__c.LookupRollupSummary__c</members>
-        <members>LookupRollupSummaryScheduleItems__c.ParentId__c</members>
-        <members>LookupRollupSummaryScheduleItems__c.ParentRecord__c</members>
-        <members>LookupRollupSummaryScheduleItems__c.QualifiedParentID__c</members>
-        <members>LookupRollupSummary__c.Active__c</members>
-        <members>LookupRollupSummary__c.AggregateOperation__c</members>
-        <members>LookupRollupSummary__c.AggregateResultField__c</members>
-        <members>LookupRollupSummary__c.CalculateJobId__c</members>
-        <members>LookupRollupSummary__c.CalculationMode__c</members>
-        <members>LookupRollupSummary__c.CalculationSharingMode__c</members>
-        <members>LookupRollupSummary__c.ChildObject__c</members>
-        <members>LookupRollupSummary__c.ConcatenateDelimiter__c</members>
-        <members>LookupRollupSummary__c.Description__c</members>
-        <members>LookupRollupSummary__c.FieldToAggregate__c</members>
-        <members>LookupRollupSummary__c.FieldToOrderBy__c</members>
-        <members>LookupRollupSummary__c.ParentObject__c</members>
-        <members>LookupRollupSummary__c.RelationshipCriteriaFields__c</members>
-        <members>LookupRollupSummary__c.RelationshipCriteria__c</members>
-        <members>LookupRollupSummary__c.RelationshipField__c</members>
-        <members>LookupRollupSummary__c.TestCodeSeeAllData__c</members>
-        <members>LookupRollupSummary__c.TestCode__c</members>
-        <members>LookupRollupSummary__c.UniqueName__c</members>
+        <members>Autonaming_Rule__mdt.Active__c</members>
+        <members>Autonaming_Rule__mdt.NameSpec_Processor__c</members>
+        <members>Autonaming_Rule__mdt.Name_Spec__c</members>
+        <members>Autonaming_Rule__mdt.Naming_Result_Field__c</members>
+        <members>Autonaming_Rule__mdt.Object__c</members>
         <name>CustomField</name>
     </types>
     <types>
-        <members>fflib_security_error_field_not_insertable</members>
-        <members>fflib_security_error_field_not_readable</members>
-        <members>fflib_security_error_field_not_updateable</members>
-        <members>fflib_security_error_object_not_deletable</members>
-        <members>fflib_security_error_object_not_insertable</members>
-        <members>fflib_security_error_object_not_readable</members>
-        <members>fflib_security_error_object_not_updateable</members>
-        <name>CustomLabel</name>
-    </types>
-    <types>
-        <members>CustomLabels</members>
-        <name>CustomLabels</name>
-    </types>
-    <types>
-        <members>DeclarativeLookupRollupSummaries__c</members>
-        <members>LookupChild__c</members>
-        <members>LookupParent__c</members>
-        <members>LookupRollupCalculateJob__c</members>
-        <members>LookupRollupSummary2__mdt</members>
-        <members>LookupRollupSummaryLog__c</members>
-        <members>LookupRollupSummaryScheduleItems__c</members>
-        <members>LookupRollupSummary__c</members>
+        <members>Autonaming_Rule__mdt</members>
         <name>CustomObject</name>
     </types>
     <types>
-        <members>Welcome</members>
-        <name>CustomPageWebLink</name>
-    </types>
-    <types>
-        <members>LookupRollupSummaryLog__c</members>
-        <members>ManageLookupRollupSummaries</members>
-        <members>Welcome</members>
-        <name>CustomTab</name>
-    </types>
-    <types>
-        <members>LookupChild__c-Lookup Child Layout</members>
-        <members>LookupParent__c-Lookup Parent Layout</members>
-        <members>LookupRollupCalculateJob__c-Lookup Rollup Calculate Job Layout</members>
-        <members>LookupRollupSummary2__mdt-Lookup Rollup Summary Layout</members>
-        <members>LookupRollupSummaryLog__c-Lookup Rollup Summary Log Layout</members>
-        <members>LookupRollupSummaryScheduleItems__c-Lookup Rollup Summary Queue Layout</members>
-        <members>LookupRollupSummary__c-Lookup Rollup Summary Layout</members>
+        <members>Autonaming_Rule__mdt-Autonaming Rule Layout</members>
         <name>Layout</name>
-    </types>
-    <types>
-        <members>LookupParent__c.All</members>
-        <members>LookupRollupSummaryLog__c.All</members>
-        <members>LookupRollupSummaryScheduleItems__c.All</members>
-        <members>LookupRollupSummary__c.All</members>
-        <name>ListView</name>
-    </types>
-    <types>
-        <members>LookupRollupSummariesFull</members>
-        <members>LookupRollupSummariesReadOnly</members>
-        <name>PermissionSet</name>
-    </types>
-    <types>
-        <members>jszip</members>
-        <name>StaticResource</name>
     </types>
     <version>36.0</version>
 </Package>
