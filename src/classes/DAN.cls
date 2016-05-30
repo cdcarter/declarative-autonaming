@@ -1,12 +1,13 @@
 global class DAN {
-    global static Boolean inTrigger = false;
+    private static Boolean inTrigger = false;
     
     // core data types for the INameSpec interface
     global class NameSpecRequest {
         public String nameSpec;
         public Id objectId;
         public SObject instant;
-        global NameSpecRequest(NameRule rule, SObject obj) {
+        global NameSpecRequest(){}
+        public NameSpecRequest(NameRule rule, SObject obj) {
             this.nameSpec = rule.nameSpec; this.objectId = obj.Id; this.instant = obj;
         }
     }
@@ -24,8 +25,9 @@ global class DAN {
     global static void handleAfterTrigger(List<SObject> objects) {
        	if(!DAN.inTrigger){
         	DAN.inTrigger = true;
-			renameAndUpdate(objects);
-            DAN.inTrigger = false;
+			    renameAndUpdate(objects);
+          DAN.inTrigger = false;
+          DAN.triggerHandleInvoked = true;
         }
     } 
     
@@ -73,13 +75,29 @@ global class DAN {
     
     @testVisible
     private static List<NameRule> getRules(Set<String> objnames) {
+      return selectorWrapper([SELECT Id, DeveloperName,Label,Active__c, Name_Spec__c, NameSpec_Processor__c, Naming_Result_Field__c, Object__c FROM Autonaming_Rule__mdt WHERE Active__c = true AND Object__c IN :objNames]);
+    }
+    
+    public static Autonaming_Rule__mdt getRuleById(Id i) {
+      return [SELECT Id, DeveloperName,Label,Active__c, Name_Spec__c, NameSpec_Processor__c, Naming_Result_Field__c, Object__c FROM Autonaming_Rule__mdt WHERE Id = :i LIMIT 1];
+    }
+    
+    public static Autonaming_Rule__mdt getRuleByDeveloperName(String devName) {
+      return [SELECT Id, DeveloperName,Label,Active__c, Name_Spec__c, NameSpec_Processor__c, Naming_Result_Field__c, Object__c FROM Autonaming_Rule__mdt WHERE DeveloperName = :devName LIMIT 1];
+    }
+    
+    public static List<Autonaming_Rule__mdt> getAllRules() {
+      return [SELECT Id, DeveloperName,Label,Active__c, Name_Spec__c, NameSpec_Processor__c, Naming_Result_Field__c, Object__c FROM Autonaming_Rule__mdt];
+    }
+    
+    @testVisible private static List<NameRule> selectorWrapper(List<Autonaming_Rule__mdt> mdts) {
       List<NameRule> result = new List<NameRule>();
       if(Test.isRunningTest()) {
         NameRule rule = new NameRule();
         rule.obj = 'Account';rule.nameField = 'Name';rule.nameSpec='test';rule.nameSpecProcessor='DAN_NameSpec'; 
         result.add(rule);
       } else {
-        for(Autonaming_Rule__mdt rule : [SELECT Active__c, Name_Spec__c, NameSpec_Processor__c, Naming_Result_Field__c, Object__c FROM Autonaming_Rule__mdt WHERE Active__c = true AND Object__c IN :objNames]) {
+        for(Autonaming_Rule__mdt rule : mdts) {
           result.add(new NameRule(rule));
         }
       }
@@ -114,16 +132,73 @@ global class DAN {
         return reqs;
     }
     
-    global class NameRule {
+    public class NameRule {
       public Boolean active;
       public String obj;
       public String nameField;
       public String nameSpec;
       public String nameSpecProcessor;
+      public Id id;
+      public String DeveloperName;
       public NameRule() {}
       public NameRule(Autonaming_Rule__mdt rule) {
         active = rule.Active__c; obj = rule.Object__c; nameField = rule.Naming_Result_Field__c;
         nameSpec = rule.Name_Spec__c; nameSpecProcessor = rule.NameSpec_Processor__c;
+        id = rule.Id; developerName = rule.developerName;
       }
     }
+    
+    public static Exception LastMetadataAPIConnectionException {get; private set;}
+
+  	public static Boolean checkMetadataAPIConnection() {
+  		try {
+  			MetadataService.MetadataPort service = createService();
+  			List<MetadataService.ListMetadataQuery> queries = new List<MetadataService.ListMetadataQuery>();		
+  			MetadataService.ListMetadataQuery remoteSites = new MetadataService.ListMetadataQuery();
+  			remoteSites.type_x = 'RemoteSiteSetting';
+  			queries.add(remoteSites);					
+  			service.listMetadata(queries, 28);			
+  		} catch (Exception e) {
+  			LastMetadataAPIConnectionException = e;
+  			return false;
+  		}
+  		LastMetadataAPIConnectionException = null;
+  		return true;
+  	}
+    
+    public static List<Id> createRules(List<SObject> ruleRecords) {
+  		CustomMetadataService.createMetadata(ruleRecords);
+  		return null;
+  	}
+
+  	public static List<Id> updateRules(List<SObject> ruleRecords) {
+  		CustomMetadataService.updateMetadata(ruleRecords);
+  		return null;
+  	}
+
+  	public static void deleteRules(List<String> ruleNames) {
+  		// Currently assumes the Id's are Custom Metadata record DeveloperName's
+  		CustomMetadataService.deleteMetadata(Autonaming_Rule__mdt.getSObjectType(), ruleNames);
+  	}
+    
+    public static MetadataService.MetadataPort createService() { 
+      MetadataService.MetadataPort service = new MetadataService.MetadataPort();
+      service.SessionHeader = new MetadataService.SessionHeader_element();
+      service.SessionHeader.sessionId = UserInfo.getSessionId();
+      return service;		
+    }	
+    
+    global static void testHandler(SObject dummyChildRecord) {
+      try {
+        insert dummyChildRecord;
+      } catch (Exception e) {
+        // If the auto generated trigger was invoked this test served its purpose (code coverage wise) ignore this error
+        if(triggerHandleInvoked)
+          return;
+        // Otherwise fail the test with the underlying exception as it prevented our trigger being invoked
+        throw e;
+      }
+    }
+    private static boolean triggerHandleInvoked = false;
+
 }

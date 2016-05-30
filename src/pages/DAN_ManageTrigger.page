@@ -1,0 +1,39 @@
+<apex:page tabStyle="Autonaming_Rule__tab" controller="DAN_Manage_CTRL" sidebar="false" action="{!initDeploy}">
+	<apex:includeScript value="{!URLFOR($Resource.jszip, '/jszip.js')}"/>
+	<apex:includeScript value="{!URLFOR($Resource.jszip, '/jszip-load.js')}"/>
+	<apex:includeScript value="{!URLFOR($Resource.jszip, '/jszip-deflate.js')}"/>
+	<apex:includeScript value="{!URLFOR($Resource.jszip, '/jszip-inflate.js')}"/>
+	<apex:form id="form">
+	  <apex:sectionHeader title="{!$ObjectType.Autonaming_Rule__mdt.Label}" subtitle="Manage Apex Trigger for {!autonamingRule.Object__c}"/>
+		<apex:pageMessages escape="false" />
+		<apex:outputPanel rendered="{!MetadataConnectionError==true}">
+			<apex:outputLink value="{!$Page.welcome}?showHeader=1">Return to the Welcome page</apex:outputLink>
+		</apex:outputPanel>
+		<apex:outputPanel rendered="{!MetadataConnectionError==false}">		
+			<apex:pageBlock >
+				<apex:pageBlockSection >
+				<pre>{!TriggerCode}</pre>
+				</apex:pageBlockSection>
+				<apex:pageBlockSection >
+				<pre>{!TriggerTestCode}</pre>
+				</apex:pageBlockSection>
+			</apex:pageBlock>
+			<apex:actionPoller action="{!checkAsyncRequest}" interval="5" rerender="form" rendered="{!NOT(ISNULL(AsyncResult))}"/>
+			<apex:actionFunction name="deployZip" action="{!deployZip}" rendered="{!ISNULL(AsyncResult)}" rerender="form">
+				<apex:param name="data" assignTo="{!ZipData}" value=""/>
+			</apex:actionFunction>
+			<c:zip name="generateZip" oncomplete="deployZip(data);" rendered="{!ISNULL(AsyncResult)}">
+				<c:zipEntry path="package.xml" data="{!PackageXml}"/>
+				<c:zipEntry path="destructiveChanges.xml" data="{!DestructiveChangesXml}" rendered="{!DeployedTrigger}"/>
+				<c:zipEntry path="classes/{!NamingTriggerTestName}.cls-meta.xml" data="{!TriggerTestCodeMetadata}" rendered="{!NOT(DeployedTrigger)}"/>
+				<c:zipEntry path="classes/{!NamingTriggerTestName}.cls" data="{!TriggerTestCode}" rendered="{!NOT(DeployedTrigger)}"/>
+				<c:zipEntry path="triggers/{!NamingTriggerName}.trigger-meta.xml" data="{!TriggerCodeMetadata}" rendered="{!NOT(DeployedTrigger)}"/>
+				<c:zipEntry path="triggers/{!NamingTriggerName}.trigger" data="{!TriggerCode}" rendered="{!NOT(DeployedTrigger)}"/>
+			</c:zip>
+			<apex:outputPanel rendered="{!ISNULL(AsyncResult)}">
+				<input type="button" onclick="generateZip();" value="{!IF(DeployedTrigger, 'Remove', 'Deploy')}" class="btn"/>
+				<apex:commandButton value="Return" action="{!URLFOR($Page.DAN_Manager, null, ['id'=autonamingRule.Id])}"/>
+			</apex:outputPanel>
+		</apex:outputPanel>
+ 	</apex:form>
+</apex:page>

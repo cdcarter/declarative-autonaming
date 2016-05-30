@@ -1,0 +1,85 @@
+<apex:page controller="DAN_Manage_CTRL" tabstyle="Autonaming_Rule__tab" showHeader="true" sidebar="true" action="{!init}">
+	<apex:form >
+		<apex:sectionHeader title="Manage Naming"/>
+		<apex:pageMessages />
+		<apex:outputPanel rendered="{!MetadataConnectionError}">
+			<apex:outputLink value="{!$Page.welcometab}">Return to the Welcome page</apex:outputLink>
+		</apex:outputPanel>
+		<apex:outputPanel rendered="{!NOT(MetadataConnectionError)}">				
+			<apex:outputLabel value="Select Rule:" />&nbsp;
+			<apex:selectList value="{!selectedRule}" size="1">
+				<apex:actionSupport event="onchange" action="{!load}" reRender="ruleDetailView"/>
+				<apex:selectOptions value="{!Rules}"/>
+			</apex:selectList>
+			<p/>
+			<apex:pageBlock mode="maindetail" id="ruleDetailView">
+				<apex:pageBlockButtons >
+					<apex:commandButton value="Save" action="{!save}"/>
+					<apex:commandButton value="Delete" action="{!deleteX}" rendered="{!autonamingRule.Id!=null}"/>
+					<apex:commandButton value="Manage Child Trigger" action="{!URLFOR($Page.DAN_ManageTrigger, null, ['id'=autonamingRule.id])}" rendered="{!autonamingRule.Id!=null}"/>
+					<!--<apex:commandButton value="Calculate" action="{!URLFOR($Page.rollupcalculatemdt, null, ['id'=LookupRollupSummary.id])}" rendered="{!LookupRollupSummary.Id!=null}"/>-->
+				</apex:pageBlockButtons>
+				<apex:pageBlockSection title="Information" columns="2">
+					<apex:pageBlockSectionItem >
+						<apex:outputLabel value="Autonaming Rule Name"/>
+						<apex:outputPanel >
+							<div class="requiredInput">
+								<div class="requiredBlock"/>
+								<apex:inputText size="32" value="{!autonamingRule.Label}"/>			
+							</div>
+						</apex:outputPanel>
+					</apex:pageBlockSectionItem>
+					<apex:pageBlockSectionItem >
+						<apex:outputLabel value="Autonaming Rule Unique Name"/>
+						<apex:outputPanel >
+							<div class="requiredInput">
+								<div class="requiredBlock"/>
+								<apex:inputText size="32" value="{!autonamingRule.DeveloperName}" disabled="{!NOT(ISBLANK(autonamingRule.Id))}"/>					
+							</div>
+						</apex:outputPanel>
+					</apex:pageBlockSectionItem>
+					<apex:pageBlockSectionItem helpText="{!$ObjectType.Autonaming_Rule__mdt.fields.Object__c.inlineHelpText}">
+					<apex:outputLabel value="{!$ObjectType.Autonaming_Rule__mdt.fields.Object__c.Label}"/>				
+						<apex:outputPanel >
+							<div class="requiredInput">
+								<div class="requiredBlock"/>
+								<apex:inputText size="32" value="{!autonamingRule.Object__c}"/>					
+							</div>
+						</apex:outputPanel>
+					</apex:pageBlockSectionItem>
+					<apex:pageBlockSectionItem helpText="{!$ObjectType.Autonaming_Rule__mdt.fields.Naming_Result_Field__c.inlineHelpText}">
+					<apex:outputLabel value="{!$ObjectType.Autonaming_Rule__mdt.fields.Naming_Result_Field__c.Label}"/>				
+						<apex:outputPanel >
+							<div class="requiredInput">
+								<div class="requiredBlock"/>
+								<apex:inputText size="32" value="{!autonamingRule.Naming_Result_Field__c}"/>					
+							</div>
+						</apex:outputPanel>
+					</apex:pageBlockSectionItem>
+					<apex:pageBlockSectionItem helpText="{!$ObjectType.Autonaming_Rule__mdt.fields.Name_Spec__c.inlineHelpText}">
+					<apex:outputLabel value="{!$ObjectType.Autonaming_Rule__mdt.fields.Name_Spec__c.Label}"/>				
+						<apex:outputPanel >
+							<div class="requiredInput">
+								<div class="requiredBlock"/>
+								<apex:inputText size="32" value="{!autonamingRule.Name_Spec__c}"/>					
+							</div>
+						</apex:outputPanel>
+					</apex:pageBlockSectionItem>
+					<apex:pageBlockSectionItem helpText="{!$ObjectType.Autonaming_Rule__mdt.fields.NameSpec_Processor__c.inlineHelpText}">
+					<apex:outputLabel value="{!$ObjectType.Autonaming_Rule__mdt.fields.NameSpec_Processor__c.Label}"/>				
+						<apex:outputPanel >
+							<div class="requiredInput">
+								<div class="requiredBlock"/>
+								<apex:inputText size="32" value="{!autonamingRule.NameSpec_Processor__c}"/>					
+							</div>
+						</apex:outputPanel>
+					</apex:pageBlockSectionItem>
+					<apex:pageBlockSectionItem helpText="{!$ObjectType.Autonaming_Rule__mdt.fields.Active__c.inlineHelpText}">
+						<apex:outputLabel value="{!$ObjectType.Autonaming_Rule__mdt.fields.Active__c.Label}"/>				
+						<apex:inputCheckbox value="{!autonamingRule.Active__c}"/>
+					</apex:pageBlockSectionItem>
+				</apex:pageBlockSection>		
+			</apex:pageBlock>
+		</apex:outputPanel>
+	</apex:form>
+</apex:page>
