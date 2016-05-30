@@ -6,8 +6,8 @@ global class DAN {
         public String nameSpec;
         public Id objectId;
         public SObject instant;
-        global NameSpecRequest(Autonaming_Rule__mdt rule, SObject obj) {
-            this.nameSpec = rule.Name_Spec__c; this.objectId = obj.Id; this.instant = obj;
+        global NameSpecRequest(NameRule rule, SObject obj) {
+            this.nameSpec = rule.nameSpec; this.objectId = obj.Id; this.instant = obj;
         }
     }
     global class NameSpecResult {
@@ -31,13 +31,13 @@ global class DAN {
     
     private static Map<String,List<Database.SaveResult>> renameAndUpdate(List<SObject> objects) {
         Map<String,List<Database.SaveResult>> retval = new Map<String,List<Database.SaveResult>>();
-        Map<Autonaming_Rule__mdt,List<SObject>> mdtMap = getMDTs(objects);
+        Map<NameRule,List<SObject>> ruleMap = getObjectsByRule(objects);
         Map<String,List<SObject>> results = new Map<String,List<SObject>>();
-        for(Autonaming_Rule__mdt rule : mdtMap.keySet()) {
-            if(!results.containsKey(rule.Object__c)) {
-                results.put(rule.Object__c,new List<SObject>());
+        for(NameRule rule : ruleMap.keySet()) {
+            if(!results.containsKey(rule.obj)) {
+                results.put(rule.obj,new List<SObject>());
             }
-            results.get(rule.Object__c).addAll(getResults(rule,mdtMap.get(rule)));
+            results.get(rule.obj).addAll(getResults(rule,ruleMap.get(rule)));
         }
         for(String objType : results.keySet()) {
             retval.put(objType,Database.update(results.get(objType)));
@@ -45,16 +45,16 @@ global class DAN {
         return retval;
     }
     
-    private static Map<Autonaming_Rule__mdt,List<SObject>> getMDTs(List<SObject> objs) {
+    private static Map<NameRule,List<SObject>> getObjectsByRule(List<SObject> objs) {
         Map<String, List<SObject>> objectMap = new Map<String, List<SObject>>();
-    	Map<String, Autonaming_Rule__mdt> mdtMap = new Map<String, Autonaming_Rule__mdt>();
+    	  Map<String, NameRule> ruleMap = new Map<String, NameRule>();
         Set<String> objNames = new Set<String>();
         for(SObject obj : objs) {
             objNames.add(obj.getSObjectType().getDescribe().getName());
         }
-        for(Autonaming_Rule__mdt rule : [SELECT Name_Spec__c, NameSpec_Processor__c, Naming_Result_Field__c, Object__c FROM Autonaming_Rule__mdt WHERE Active__c = true AND Object__c IN :objNames]) {
-            objectMap.put(rule.Object__c,new List<SObject>());
-            mdtMap.put(rule.Object__c,rule);
+        for(NameRule rule : getRules(objNames)) {
+          objectMap.put(rule.obj,new List<SObject>());
+          ruleMap.put(rule.obj,rule);
         }
         for(SObject obj : objs) {
             String objName = obj.getSObjectType().getDescribe().getName();
@@ -62,36 +62,57 @@ global class DAN {
                 objectMap.get(objName).add(obj);
             }
         }
-        Map<Autonaming_Rule__mdt,List<SObject>> result = new Map<Autonaming_Rule__mdt,List<SObject>>();
+        Map<NameRule,List<SObject>> result = new Map<NameRule,List<SObject>>();
         for(String obj : objNames) {
-            result.put(mdtMap.get(obj),objectMap.get(obj));
+            result.put(ruleMap.get(obj),objectMap.get(obj));
         }
         return result;
     }
     
-    private static List<SObject> getResults(Autonaming_Rule__mdt rule,List<SObject> objs) {
-        Type processorType = Type.forName(rule.NameSpec_Processor__c);
-		INameSpec processor = (INameSpec)processorType.newInstance();
+    private static List<NameRule> getRules(Set<String> objnames) {
+      List<NameRule> result = new List<NameRule>();
+      for(Autonaming_Rule__mdt rule : [SELECT Name_Spec__c, NameSpec_Processor__c, Naming_Result_Field__c, Object__c FROM Autonaming_Rule__mdt WHERE Active__c = true AND Object__c IN :objNames]) {
+        result.add(new NameRule(rule));
+      }
+      return result;
+    }
+    
+    private static List<SObject> getResults(NameRule rule,List<SObject> objs) {
+        Type processorType = Type.forName(rule.nameSpecProcessor);
+		    INameSpec processor = (INameSpec)processorType.newInstance();
         List<NameSpecRequest> reqs = reqsFromObjects(rule,objs);
         List<NameSpecResult> processorResults = processor.autoname(reqs);
         
-        SObjectType objType = Schema.getGlobalDescribe().get(rule.Object__c);
+        SObjectType objType = Schema.getGlobalDescribe().get(rule.obj);
         List<SObject> result = new List<SObject>();
         for(NameSpecResult res : processorResults) {
             SObject obj = objType.newSObject();
             obj.put('Id', res.objectId);
-            obj.put(rule.Naming_Result_Field__c, res.name);
+            obj.put(rule.nameField, res.name);
             result.add(obj);
         }
         return result;
     }
     
-    private static List<NameSpecRequest> reqsFromObjects(Autonaming_Rule__mdt rule, List<SObject> objs) {
+    private static List<NameSpecRequest> reqsFromObjects(NameRule rule, List<SObject> objs) {
         List<NameSpecRequest> reqs = new List<NameSpecRequest>();
         for(SObject obj : objs) {
             NameSpecRequest req = new NameSpecRequest(rule,obj);
             reqs.add(req);
         }
         return reqs;
+    }
+    
+    global class NameRule {
+      public Boolean active;
+      public String obj;
+      public String nameField;
+      public String nameSpec;
+      public String nameSpecProcessor;
+      public NameRule() {}
+      public NameRule(Autonaming_Rule__mdt rule) {
+        active = rule.Active__c; obj = rule.Object__c; nameField = rule.Naming_Result_Field__c;
+        nameSpec = rule.Name_Spec__c; nameSpecProcessor = rule.NameSpec_Processor__c;
+      }
     }
 }
