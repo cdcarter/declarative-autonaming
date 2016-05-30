@@ -17,3 +17,4 @@ unpackaged/zipped
 unpackaged_stage
 packaged
 .*.swp
+debug/
