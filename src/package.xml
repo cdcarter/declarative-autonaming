@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Declarative+Autonaming</fullName>
     <types>
         <members>CustomMetadataService</members>
         <members>CustomMetadataServiceTest</members>
@@ -24,6 +25,14 @@
         <name>ApexPage</name>
     </types>
     <types>
+        <members>Autonaming_Rule__mdt.Active__c</members>
+        <members>Autonaming_Rule__mdt.NameSpec_Processor__c</members>
+        <members>Autonaming_Rule__mdt.Name_Spec__c</members>
+        <members>Autonaming_Rule__mdt.Naming_Result_Field__c</members>
+        <members>Autonaming_Rule__mdt.Object__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
         <members>Autonaming_Rule__mdt</members>
         <name>CustomObject</name>
     </types>
@@ -36,5 +45,5 @@
         <members>jszip</members>
         <name>StaticResource</name>
     </types>
-    <version>34.0</version>
+    <version>36.0</version>
 </Package>
