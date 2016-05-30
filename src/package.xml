@@ -20,8 +20,7 @@
     <types>
         <members>DAN_ManageTrigger</members>
         <members>DAN_Manager</members>
-        <members>welcome</members>
-        <members>welcometab</members>
+        <members>WelcomeTab</members>
         <name>ApexPage</name>
     </types>
     <types>

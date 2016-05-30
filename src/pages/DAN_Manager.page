@@ -3,7 +3,7 @@
 		<apex:sectionHeader title="Manage Naming"/>
 		<apex:pageMessages />
 		<apex:outputPanel rendered="{!MetadataConnectionError}">
-			<apex:outputLink value="{!$Page.welcometab}">Return to the Welcome page</apex:outputLink>
+			<apex:outputLink value="{!$Page.WelcomeTab}">Return to the Welcome page</apex:outputLink>
 		</apex:outputPanel>
 		<apex:outputPanel rendered="{!NOT(MetadataConnectionError)}">				
 			<apex:outputLabel value="Select Rule:" />&nbsp;

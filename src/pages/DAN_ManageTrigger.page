@@ -7,7 +7,7 @@
 	  <apex:sectionHeader title="{!$ObjectType.Autonaming_Rule__mdt.Label}" subtitle="Manage Apex Trigger for {!autonamingRule.Object__c}"/>
 		<apex:pageMessages escape="false" />
 		<apex:outputPanel rendered="{!MetadataConnectionError==true}">
-			<apex:outputLink value="{!$Page.welcome}?showHeader=1">Return to the Welcome page</apex:outputLink>
+			<apex:outputLink value="{!$Page.WelcomeTab}?showHeader=1">Return to the Welcome page</apex:outputLink>
 		</apex:outputPanel>
 		<apex:outputPanel rendered="{!MetadataConnectionError==false}">		
 			<apex:pageBlock >
