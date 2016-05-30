@@ -44,19 +44,19 @@
         <actionName>View</actionName>
         <type>Default</type>
     </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
-    <deprecated>false</deprecated>
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableReports>false</enableReports>
+    <enableSearch>false</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <fields>
         <fullName>Colours__c</fullName>
-        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Colours</label>
         <picklist>
@@ -115,7 +115,6 @@
     </fields>
     <fields>
         <fullName>Total__c</fullName>
-        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Total</label>
         <precision>18</precision>
@@ -138,11 +137,4 @@
     <pluralLabel>Lookup Parents</pluralLabel>
     <searchLayouts/>
     <sharingModel>Read</sharingModel>
-    <validationRules>
-        <fullName>Not_42</fullName>
-        <active>true</active>
-        <errorConditionFormula>Total__c !=42</errorConditionFormula>
-        <errorDisplayField>Total__c</errorDisplayField>
-        <errorMessage>The answer is not 42!</errorMessage>
-    </validationRules>
 </CustomObject>

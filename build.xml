@@ -9,7 +9,7 @@
         serverurl="${sf.serverurl}" 
         runAllTests="true"
         logType="Detail"
-        deployRoot="rolluptool/src"
+        deployRoot="src"
         maxPoll="${sf.maxPoll}" />
     </target>
 
@@ -19,7 +19,7 @@
         serverurl="${sf.serverurl}" 
         runAllTests="false"
         logType="Detail"
-        deployRoot="rolluptool/src"
+        deployRoot="src"
         maxPoll="${sf.maxPoll}" />
     </target>
 

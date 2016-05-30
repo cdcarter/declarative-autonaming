@@ -44,19 +44,19 @@
         <actionName>View</actionName>
         <type>Default</type>
     </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
-    <deprecated>false</deprecated>
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableReports>false</enableReports>
+    <enableSearch>false</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <fields>
         <fullName>Amount__c</fullName>
-        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Amount</label>
         <precision>18</precision>
@@ -68,7 +68,6 @@
     </fields>
     <fields>
         <fullName>Color__c</fullName>
-        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Color</label>
         <picklist>
@@ -116,7 +115,6 @@
     <fields>
         <fullName>LookupParent2__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
-        <deprecated>false</deprecated>        
         <externalId>false</externalId>
         <label>Lookup Parent 2</label>
         <referenceTo>LookupParent__c</referenceTo>
@@ -129,7 +127,6 @@
     <fields>
         <fullName>LookupParent__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
-        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Lookup Parent</label>
         <referenceTo>LookupParent__c</referenceTo>

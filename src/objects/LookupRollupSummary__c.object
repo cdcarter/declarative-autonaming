@@ -44,20 +44,20 @@
         <actionName>View</actionName>
         <type>Default</type>
     </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
-    <deprecated>false</deprecated>
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableReports>false</enableReports>
+    <enableSearch>false</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <fields>
         <fullName>Active__c</fullName>
         <defaultValue>false</defaultValue>
-        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <inlineHelpText>For Realtime rollups can only be set when the Child Apex Trigger has been deployed.</inlineHelpText>
         <label>Active</label>
@@ -66,7 +66,6 @@
     </fields>
     <fields>
         <fullName>AggregateOperation__c</fullName>
-        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <inlineHelpText>Rollup operation.</inlineHelpText>
         <label>Aggregate Operation</label>
@@ -118,7 +117,6 @@
     </fields>
     <fields>
         <fullName>AggregateResultField__c</fullName>
-        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <inlineHelpText>API name of the field that will store the result of the rollup on the Parent Object, e.g. AnnualRevenue</inlineHelpText>
         <label>Aggregate Result Field</label>
@@ -130,7 +128,6 @@
     </fields>
     <fields>
         <fullName>CalculateJobId__c</fullName>
-        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <inlineHelpText>This field is used by the system when using the Calculate button to track if a calculation job is already running. Clear this field if the system reports the calculate job is already running and you known this is not the case.</inlineHelpText>
         <label>Calculate Job Id</label>
@@ -142,7 +139,6 @@
     </fields>
     <fields>
         <fullName>CalculationMode__c</fullName>
-        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <inlineHelpText>Realtime mode requires an Apex Trigger to be deployed for the Child Object. Click Manage Child Trigger button to deploy.</inlineHelpText>
         <label>Calculation Mode</label>
@@ -170,7 +166,6 @@
     </fields>
     <fields>
         <fullName>CalculationSharingMode__c</fullName>
-        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <inlineHelpText>Determines if the Sharing Rules defined on the Child Object are considered when calculating the rollup. Default is User.</inlineHelpText>
         <label>Calculation Sharing Mode</label>
@@ -190,7 +185,6 @@
     </fields>
     <fields>
         <fullName>ChildObject__c</fullName>
-        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <inlineHelpText>API name of the Child Object, e.g. Opportunity</inlineHelpText>
         <label>Child Object</label>
@@ -202,7 +196,6 @@
     </fields>
     <fields>
         <fullName>ConcatenateDelimiter__c</fullName>
-        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <inlineHelpText>Enter the character or characters to delimit values in the Field to Aggregate when rolling up text values into the Aggregate Result Field, enter BR() for new line. Only applies when using Concatenate operation.</inlineHelpText>
         <label>Concatenate Delimiter</label>
@@ -214,7 +207,6 @@
     </fields>
     <fields>
         <fullName>Description__c</fullName>
-        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Description</label>
         <length>131072</length>
@@ -224,7 +216,6 @@
     </fields>
     <fields>
         <fullName>FieldToAggregate__c</fullName>
-        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <inlineHelpText>API name of the field on the Child Object that contains the value to rollup, e.g. Amount</inlineHelpText>
         <label>Field to Aggregate</label>
@@ -236,7 +227,6 @@
     </fields>
     <fields>
         <fullName>FieldToOrderBy__c</fullName>
-        <deprecated>false</deprecated>
         <description>Examples:
 1) Amount__c
 2) Amount__c, Color__c ASC
@@ -252,7 +242,6 @@
     </fields>
     <fields>
         <fullName>ParentObject__c</fullName>
-        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <inlineHelpText>API name of the Parent Object, e.g. Account</inlineHelpText>
         <label>Parent Object</label>
@@ -264,7 +253,6 @@
     </fields>
     <fields>
         <fullName>RelationshipCriteriaFields__c</fullName>
-        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <inlineHelpText>If you have specified a relationship criteria, you must confirm the fields referenced by it here on separate lines, for example for criteria StageName = &apos;Won&apos; list StageName in this field. You do not need to specify the Field to Aggregate field however.</inlineHelpText>
         <label>Relationship Criteria Fields</label>
@@ -274,7 +262,6 @@
     </fields>
     <fields>
         <fullName>RelationshipCriteria__c</fullName>
-        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <inlineHelpText>SOQL WHERE clause applied when querying Child Object records, e.g. Amount &gt; 200</inlineHelpText>
         <label>Relationship Criteria</label>
@@ -286,7 +273,6 @@
     </fields>
     <fields>
         <fullName>RelationshipField__c</fullName>
-        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <inlineHelpText>API name of the Lookup field on the Child Object relating to the Parent Object, e.g. AccountId</inlineHelpText>
         <label>Relationship Field</label>
@@ -307,7 +293,6 @@
     </fields>
     <fields>
         <fullName>TestCode__c</fullName>
-        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <inlineHelpText>This tool utilises a dynamically generated Apex Trigger and by default a generated Apex Test. Use this field if instructed by a developer to replace the generated test code. For more information see the tools Wiki on GitHub.</inlineHelpText>
         <label>Test Code</label>
@@ -319,7 +304,6 @@
     <fields>
         <fullName>UniqueName__c</fullName>
         <caseSensitive>false</caseSensitive>
-        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Lookup Rollup Summary Unique Name</label>
         <length>80</length>
@@ -339,64 +323,6 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Lookup Rollup Summaries</pluralLabel>
-    <searchLayouts>
-        <listViewButtons>EnhancedNew</listViewButtons>
-    </searchLayouts>
+    <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
-    <webLinks>
-        <fullName>Calculate</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <height>600</height>
-        <linkType>page</linkType>
-        <masterLabel>Calculate</masterLabel>
-        <openType>sidebar</openType>
-        <page>rollupcalculate</page>
-        <protected>false</protected>
-    </webLinks>
-    <webLinks>
-        <fullName>EnhancedEdit</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <height>600</height>
-        <linkType>page</linkType>
-        <masterLabel>Enhanced Edit (Pilot)</masterLabel>
-        <openType>sidebar</openType>
-        <page>rollupsummaryenhanced</page>
-        <protected>false</protected>
-    </webLinks>
-    <webLinks>
-        <fullName>EnhancedNew</fullName>
-        <availability>online</availability>
-        <displayType>massActionButton</displayType>
-        <height>600</height>
-        <linkType>page</linkType>
-        <masterLabel>Enhanced New Lookup Rollup Summary (Pilot)</masterLabel>
-        <openType>noSidebar</openType>
-        <page>rollupsummaryenhancednew</page>
-        <protected>false</protected>
-        <requireRowSelection>false</requireRowSelection>
-    </webLinks>
-    <webLinks>
-        <fullName>ManageChildTrigger</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <height>600</height>
-        <linkType>page</linkType>
-        <masterLabel>Manage Child Trigger</masterLabel>
-        <openType>sidebar</openType>
-        <page>managetrigger</page>
-        <protected>false</protected>
-    </webLinks>
-    <webLinks>
-        <fullName>Schedule_Calculate</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <height>600</height>
-        <linkType>page</linkType>
-        <masterLabel>Schedule Calculate</masterLabel>
-        <openType>sidebar</openType>
-        <page>rollupscheduledcalculate</page>
-        <protected>false</protected>
-    </webLinks>
 </CustomObject>

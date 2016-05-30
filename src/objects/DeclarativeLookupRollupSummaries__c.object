@@ -5,7 +5,6 @@
     <fields>
         <fullName>CalculateJobScopeSize__c</fullName>
         <defaultValue>100</defaultValue>
-        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Calculate Job Scope Size</label>
         <precision>6</precision>
@@ -18,7 +17,6 @@
     <fields>
         <fullName>HideManageLookupRollupSummariesInfo__c</fullName>
         <defaultValue>false</defaultValue>
-        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Hide Manage Lookup Rollup Summaries Info</label>
         <trackTrending>false</trackTrending>
@@ -27,7 +25,6 @@
     <fields>
         <fullName>ScheduledJobScopeSize__c</fullName>
         <defaultValue>100</defaultValue>
-        <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Scheduled Job Scope Size</label>
         <precision>6</precision>
