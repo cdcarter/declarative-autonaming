@@ -29,6 +29,7 @@ global class DAN {
         }
     } 
     
+    @testVisible
     private static Map<String,List<Database.SaveResult>> renameAndUpdate(List<SObject> objects) {
         Map<String,List<Database.SaveResult>> retval = new Map<String,List<Database.SaveResult>>();
         Map<NameRule,List<SObject>> ruleMap = getObjectsByRule(objects);
@@ -45,6 +46,7 @@ global class DAN {
         return retval;
     }
     
+    @testVisible
     private static Map<NameRule,List<SObject>> getObjectsByRule(List<SObject> objs) {
         Map<String, List<SObject>> objectMap = new Map<String, List<SObject>>();
     	  Map<String, NameRule> ruleMap = new Map<String, NameRule>();
@@ -69,14 +71,22 @@ global class DAN {
         return result;
     }
     
+    @testVisible
     private static List<NameRule> getRules(Set<String> objnames) {
       List<NameRule> result = new List<NameRule>();
-      for(Autonaming_Rule__mdt rule : [SELECT Name_Spec__c, NameSpec_Processor__c, Naming_Result_Field__c, Object__c FROM Autonaming_Rule__mdt WHERE Active__c = true AND Object__c IN :objNames]) {
-        result.add(new NameRule(rule));
+      if(Test.isRunningTest()) {
+        NameRule rule = new NameRule();
+        rule.obj = 'Account';rule.nameField = 'Name';rule.nameSpec='test';rule.nameSpecProcessor='DAN_NameSpec'; 
+        result.add(rule);
+      } else {
+        for(Autonaming_Rule__mdt rule : [SELECT Active__c, Name_Spec__c, NameSpec_Processor__c, Naming_Result_Field__c, Object__c FROM Autonaming_Rule__mdt WHERE Active__c = true AND Object__c IN :objNames]) {
+          result.add(new NameRule(rule));
+        }
       }
       return result;
     }
     
+    @testVisible
     private static List<SObject> getResults(NameRule rule,List<SObject> objs) {
         Type processorType = Type.forName(rule.nameSpecProcessor);
 		    INameSpec processor = (INameSpec)processorType.newInstance();
@@ -94,6 +104,7 @@ global class DAN {
         return result;
     }
     
+    @testVisible
     private static List<NameSpecRequest> reqsFromObjects(NameRule rule, List<SObject> objs) {
         List<NameSpecRequest> reqs = new List<NameSpecRequest>();
         for(SObject obj : objs) {
