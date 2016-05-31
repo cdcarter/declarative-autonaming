@@ -6,9 +6,9 @@
 	<apex:form id="form">
 	  <apex:sectionHeader title="{!$ObjectType.Autonaming_Rule__mdt.Label}" subtitle="Manage Apex Trigger for {!autonamingRule.Object__c}"/>
 		<apex:pageMessages escape="false" />
-		<apex:outputPanel rendered="{!MetadataConnectionError==true}">
+		<apex:outputPanel rendered="{!MetadataConnectionError}">
 		</apex:outputPanel>
-		<apex:outputPanel rendered="{!MetadataConnectionError==false}">
+		<apex:outputPanel rendered="{!NOT(MetadataConnectionError)}">
 			<apex:pageBlock >
 				<apex:pageBlockSection >
 				<pre>{!TriggerCode}</pre>
