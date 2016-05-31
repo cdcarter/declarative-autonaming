@@ -9,7 +9,7 @@ public class DAN_NameSpec implements DAN.INameSpec {
     }
     List<String> fieldsToQuery = new List<String>(fields);
     // currently taking advantage of the fact that DAN batches NameSpecRequests by object type...
-    String query = 'SELECT ' + String.join(fieldsToQuery,',') + ' FROM ' + reqs[0].objectType.getDescribe().getName();
+    String query = 'SELECT ' + String.join(fieldsToQuery,',') + ' FROM ' + reqs[0].objectType.getDescribe().getName() +' WHERE Id IN :recordsToRename';
     Map<Id,SObject> objects = new Map<Id,SObject>(Database.query(query));
 
     for(DAN.NameSpecRequest req : reqs) {
