@@ -1,10 +1,21 @@
 public class DAN_NameSpec implements DAN.INameSpec {
   public List<DAN.NameSpecResult> autoname(List<DAN.NameSpecRequest> reqs) {
     List<DAN.NameSpecResult> results = new List<DAN.NameSpecResult>();
+    Set<Id> recordsToRename = new Set<id>();
+    Set<String> fields = new Set<String>();
+    for(DAN.NameSpecRequest req : reqs) {
+      recordsToRename.add(req.objectId);
+      fields.addAll(getFieldNamesFromSpec(req.nameSpec));
+    }
+    List<String> fieldsToQuery = new List<String>(fields);
+    // currently taking advantage of the fact that DAN batches NameSpecRequests by object type...
+    String query = 'SELECT ' + String.join(fieldsToQuery,',') + ' FROM ' + reqs[0].objectType.getDescribe().getName();
+    Map<Id,SObject> objects = new Map<Id,SObject>(Database.query(query));
+
     for(DAN.NameSpecRequest req : reqs) {
       DAN.NameSpecResult res = new DAN.NameSpecResult();
       res.objectId = req.objectId;
-      res.name = processName(req);
+      res.name = processName(req,objects.get(req.objectId));
       results.add(res);
     }
     return results;
@@ -13,8 +24,22 @@ public class DAN_NameSpec implements DAN.INameSpec {
   private static string openToken = '{!';
   private static string closeToken = '}';
 
-  @testVisible
-  private String processName(DAN.NameSpecRequest request) {
+
+  public static set<string> getFieldNamesFromSpec(String spec) {
+      set<string> setStrField = new set<string>();
+      if (!string.isBlank(spec)) {
+        Pattern namePattern = Pattern.compile('\\{![^\\{!]*\\}');
+        Matcher nameMatcher = namePattern.matcher(spec);
+
+          while (nameMatcher.find()) {
+              string strField = spec.substring(nameMatcher.start() + openToken.length(), nameMatcher.end()-closeToken.length());
+              setStrField.add(strField.trim().toLowerCase());
+          }
+      }
+      return setStrField;
+  }
+
+  private String processName(DAN.NameSpecRequest request, SObject obj) {
     String result = request.nameSpec;
     Pattern namePattern = Pattern.compile('\\{![^\\{!]*\\}');
     Matcher nameMatcher = namePattern.matcher(request.nameSpec);
@@ -22,11 +47,9 @@ public class DAN_NameSpec implements DAN.INameSpec {
     while (nameMatcher.find()) {
       String field = request.nameSpec.substring(nameMatcher.start() + openToken.length(), nameMatcher.end()-closeToken.length());
       List<String> splitField = (field.split('\\.',0));
-      system.debug("splitfield");
-      system.debug(splitField);
       String fieldName = splitField[splitField.size()-1];
       splitField.remove(splitField.size()-1);
-      SObject thisObj = request.instant;
+      SObject thisObj = obj;
       if(thisObj != null) {
         for(String parentObj : splitField) {
           thisObj = thisObj.getSObject(parentObj);

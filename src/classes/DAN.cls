@@ -3,10 +3,10 @@ global class DAN {
     global class NameSpecRequest {
         public String nameSpec;
         public Id objectId;
-        public SObject instant;
+        public SObjectType objectType;
         global NameSpecRequest(){}
         public NameSpecRequest(NameRule rule, SObject obj) {
-            this.nameSpec = rule.nameSpec; this.objectId = obj.Id; this.instant = obj;
+            this.nameSpec = rule.nameSpec; this.objectId = obj.Id; this.objectType = obj.getSObjectType();
         }
     }
     global class NameSpecResult {
