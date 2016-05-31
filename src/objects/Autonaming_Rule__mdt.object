@@ -5,6 +5,7 @@
         <fullName>Active__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
         <inlineHelpText>Autonaming will only run on active naming rules</inlineHelpText>
         <label>Active</label>
         <type>Checkbox</type>
@@ -13,6 +14,7 @@
         <fullName>NameSpec_Processor__c</fullName>
         <defaultValue>&quot;DAN_Namespec&quot;</defaultValue>
         <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
         <inlineHelpText>Name of the Apex Class that will provide NameSpec parsing and resolution.</inlineHelpText>
         <label>NameSpec Processor</label>
         <length>255</length>
@@ -24,6 +26,7 @@
         <fullName>Name_Spec__c</fullName>
         <description>Name spec currently supports {!FieldName__c} syntax and that is it.</description>
         <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
         <inlineHelpText>The namespec formatted name template. See the docs for help with namespecs.</inlineHelpText>
         <label>Name Spec</label>
         <length>255</length>
@@ -35,6 +38,7 @@
         <fullName>Naming_Result_Field__c</fullName>
         <defaultValue>&quot;Name&quot;</defaultValue>
         <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
         <inlineHelpText>The API name of the field to populate with the autoname.</inlineHelpText>
         <label>Naming Result Field</label>
         <length>255</length>
@@ -45,6 +49,7 @@
     <fields>
         <fullName>Object__c</fullName>
         <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
         <inlineHelpText>The name of the object that this naming rule runs on</inlineHelpText>
         <label>Object</label>
         <length>80</length>
