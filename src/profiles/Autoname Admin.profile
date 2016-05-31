@@ -28,14 +28,6 @@
         <apexClass>MetadataServiceTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-    <classAccesses>
-        <apexClass>WelcomeController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>WelcomeControllerTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
     <custom>true</custom>
     <fieldPermissions>
         <editable>false</editable>
@@ -51,10 +43,6 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>DAN_Manager</apexPage>
-        <enabled>true</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>WelcomeTab</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <userLicense>Salesforce</userLicense>
