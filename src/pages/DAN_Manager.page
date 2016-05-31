@@ -1,11 +1,67 @@
 <apex:page controller="DAN_Manage_CTRL" tabstyle="Autonaming_Rule__tab" showHeader="true" sidebar="true" action="{!init}">
-	<apex:form >
+<script>
+function createRemoteSite()
+{
+	// Disable button
+	document.getElementById('createremotesitebtn').disabled = true;
+	// Calls the Metdata API from JavaScript to create the Remote Site Setting to permit Apex callouts
+	var binding = new XMLHttpRequest();
+	var request =
+		'<?xml version="1.0" encoding="utf-8"?>' +
+		'<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'+
+			'<env:Header>' +
+				'<urn:SessionHeader xmlns:urn="http://soap.sforce.com/2006/04/metadata">' +
+					'<urn:sessionId>{!$Api.Session_ID}</urn:sessionId>' +
+				'</urn:SessionHeader>' +
+			'</env:Header>' +
+			'<env:Body>' +
+				'<createMetadata xmlns="http://soap.sforce.com/2006/04/metadata">' +
+					'<metadata xsi:type="RemoteSiteSetting">' +
+						'<fullName>{!RemoteSiteName}</fullName>' +
+						'<description>Metadata API Remote Site Setting for Declarative Autonaming (DAN)</description>' +
+						'<disableProtocolSecurity>false</disableProtocolSecurity>' +
+						'<isActive>true</isActive>' +
+						'<url>https://{!Host}</url>' +
+					'</metadata>' +
+				'</createMetadata>' +
+			'</env:Body>' +
+		'</env:Envelope>';
+	binding.open('POST', 'https://{!Host}/services/Soap/m/31.0');
+	binding.setRequestHeader('SOAPAction','""');
+	binding.setRequestHeader('Content-Type', 'text/xml');
+	binding.onreadystatechange =
+		function() {
+			if(this.readyState==4) {
+				var parser = new DOMParser();
+				var doc  = parser.parseFromString(this.response, 'application/xml');
+				var errors = doc.getElementsByTagName('errors');
+				var messageText = '';
+				for(var errorIdx = 0; errorIdx < errors.length; errorIdx++)
+					messageText+= errors.item(errorIdx).getElementsByTagName('message').item(0).innerHTML + '\n';
+				displayMetadataResponse(messageText);
+			}
+		}
+	binding.send(request);
+}
+</script>
+<body>
+	<apex:form id="page" >
+		<apex:actionFunction name="displayMetadataResponse" action="{!displayMetadataResponse}" rerender="page">
+			<apex:param name="metadataResponse" assignTo="{!metadataResponse}" value="{!metadataResponse}"/>
+		</apex:actionFunction>
 		<apex:sectionHeader title="Manage Naming"/>
 		<apex:pageMessages />
 		<apex:outputPanel rendered="{!MetadataConnectionError}">
-			<apex:outputLink value="{!$Page.WelcomeTab}">Return to the Welcome page</apex:outputLink>
+			<h1>Important Post Install Step:</h1>
+			<p>In order to utilize the features of this tool you need to permit it to access the Salesforce Metadata API of your organization by adding a <a target="_new" href="http://na1.salesforce.com/help/doc/en/configuring_remoteproxy.htm">Remote Site Setting</a> with this Salesforce Server URL <b>https://{!Host}</b></p>
+			<p> Click the <b>Create Remote Site Setting</b> button to have the tool perform this step for you.</p>
+			<input id="createremotesitebtn" type="button" onclick="createRemoteSite();" value="Create Remote Site Setting"/>
 		</apex:outputPanel>
-		<apex:outputPanel rendered="{!NOT(MetadataConnectionError)}">				
+		<apex:outputPanel rendered="{!MetadataConnectionError}">
+			<p style="color:gray">DEBUG USE ONLY: {!metadataApiException}</p>
+		</apex:outputPanel>
+		<apex:pageMessages />
+		<apex:outputPanel rendered="{!NOT(MetadataConnectionError)}">
 			<apex:outputLabel value="Select Rule:" />&nbsp;
 			<apex:selectList value="{!selectedRule}" size="1">
 				<apex:actionSupport event="onchange" action="{!load}" reRender="ruleDetailView"/>
@@ -25,7 +81,7 @@
 						<apex:outputPanel >
 							<div class="requiredInput">
 								<div class="requiredBlock"/>
-								<apex:inputText size="32" value="{!autonamingRule.Label}"/>			
+								<apex:inputText size="32" value="{!autonamingRule.Label}"/>
 							</div>
 						</apex:outputPanel>
 					</apex:pageBlockSectionItem>
@@ -34,52 +90,54 @@
 						<apex:outputPanel >
 							<div class="requiredInput">
 								<div class="requiredBlock"/>
-								<apex:inputText size="32" value="{!autonamingRule.DeveloperName}" disabled="{!NOT(ISBLANK(autonamingRule.Id))}"/>					
+								<apex:inputText size="32" value="{!autonamingRule.DeveloperName}" disabled="{!NOT(ISBLANK(autonamingRule.Id))}"/>
 							</div>
 						</apex:outputPanel>
 					</apex:pageBlockSectionItem>
 					<apex:pageBlockSectionItem helpText="{!$ObjectType.Autonaming_Rule__mdt.fields.Object__c.inlineHelpText}">
-					<apex:outputLabel value="{!$ObjectType.Autonaming_Rule__mdt.fields.Object__c.Label}"/>				
+					<apex:outputLabel value="{!$ObjectType.Autonaming_Rule__mdt.fields.Object__c.Label}"/>
 						<apex:outputPanel >
 							<div class="requiredInput">
 								<div class="requiredBlock"/>
-								<apex:inputText size="32" value="{!autonamingRule.Object__c}"/>					
+								<apex:inputText size="32" value="{!autonamingRule.Object__c}"/>
 							</div>
 						</apex:outputPanel>
 					</apex:pageBlockSectionItem>
 					<apex:pageBlockSectionItem helpText="{!$ObjectType.Autonaming_Rule__mdt.fields.Naming_Result_Field__c.inlineHelpText}">
-					<apex:outputLabel value="{!$ObjectType.Autonaming_Rule__mdt.fields.Naming_Result_Field__c.Label}"/>				
+					<apex:outputLabel value="{!$ObjectType.Autonaming_Rule__mdt.fields.Naming_Result_Field__c.Label}"/>
 						<apex:outputPanel >
 							<div class="requiredInput">
 								<div class="requiredBlock"/>
-								<apex:inputText size="32" value="{!autonamingRule.Naming_Result_Field__c}"/>					
+								<apex:inputText size="32" value="{!autonamingRule.Naming_Result_Field__c}"/>
 							</div>
 						</apex:outputPanel>
 					</apex:pageBlockSectionItem>
 					<apex:pageBlockSectionItem helpText="{!$ObjectType.Autonaming_Rule__mdt.fields.Name_Spec__c.inlineHelpText}">
-					<apex:outputLabel value="{!$ObjectType.Autonaming_Rule__mdt.fields.Name_Spec__c.Label}"/>				
+					<apex:outputLabel value="{!$ObjectType.Autonaming_Rule__mdt.fields.Name_Spec__c.Label}"/>
 						<apex:outputPanel >
 							<div class="requiredInput">
 								<div class="requiredBlock"/>
-								<apex:inputText size="32" value="{!autonamingRule.Name_Spec__c}"/>					
+								<apex:inputText size="32" value="{!autonamingRule.Name_Spec__c}"/>
 							</div>
 						</apex:outputPanel>
 					</apex:pageBlockSectionItem>
 					<apex:pageBlockSectionItem helpText="{!$ObjectType.Autonaming_Rule__mdt.fields.NameSpec_Processor__c.inlineHelpText}">
-					<apex:outputLabel value="{!$ObjectType.Autonaming_Rule__mdt.fields.NameSpec_Processor__c.Label}"/>				
+					<apex:outputLabel value="{!$ObjectType.Autonaming_Rule__mdt.fields.NameSpec_Processor__c.Label}"/>
 						<apex:outputPanel >
 							<div class="requiredInput">
 								<div class="requiredBlock"/>
-								<apex:inputText size="32" value="{!autonamingRule.NameSpec_Processor__c}"/>					
+								<apex:inputText size="32" value="{!autonamingRule.NameSpec_Processor__c}"/>
 							</div>
 						</apex:outputPanel>
 					</apex:pageBlockSectionItem>
 					<apex:pageBlockSectionItem helpText="{!$ObjectType.Autonaming_Rule__mdt.fields.Active__c.inlineHelpText}">
-						<apex:outputLabel value="{!$ObjectType.Autonaming_Rule__mdt.fields.Active__c.Label}"/>				
+						<apex:outputLabel value="{!$ObjectType.Autonaming_Rule__mdt.fields.Active__c.Label}"/>
 						<apex:inputCheckbox value="{!autonamingRule.Active__c}"/>
 					</apex:pageBlockSectionItem>
-				</apex:pageBlockSection>		
+				</apex:pageBlockSection>
 			</apex:pageBlock>
 		</apex:outputPanel>
 	</apex:form>
+</body>
 </apex:page>
+
