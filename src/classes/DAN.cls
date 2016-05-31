@@ -40,7 +40,13 @@ global class DAN {
       Schema.SObjectType objType = Schema.getGlobalDescribe().get(objString);
       try {
         SObject testRecord = objType.newSObject(null,true);
+        testRecord.put('Name','anythngbutthis');
+        if(objString == 'Opportunity') {
+          testRecord.put('StageName','Posted');
+          testRecord.put('CloseDate',Date.today());
+        }
         insert testRecord;
+        system.assertNotEquals('anythingButThis',(String)testRecord.get('Name'));
       } catch (Exception e) {
         if(triggerHandlerInvoked) return; // throw away errors if the trigger ran.
         throw e;
