@@ -36,8 +36,10 @@ global class DAN {
         }
     }
 
-    global static void testHandler(SObject testRecord) {
+    global static void testHandler(String objString) {
+      Schema.SObjectType objType = Schema.getGlobalDescribe().get(objString);
       try {
+        SObject testRecord = objType.newSObject(null,true);
         insert testRecord;
       } catch (Exception e) {
         if(triggerHandlerInvoked) return; // throw away errors if the trigger ran.
