@@ -1,0 +1,6 @@
+/**
+ * Auto Generated and Deployed by the Declarative Autonaming package (dan)
+ **/
+trigger {0} on {1} (after insert, after undelete, after update) {
+     {2}DAN.handleAfterTrigger(Trigger.new);
+};
