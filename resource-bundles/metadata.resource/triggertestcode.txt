@@ -1,9 +1,0 @@
-/**
- * Auto Generated and Deployed by the Declarative Autonaming package (dan)
- **/
-@IsTest
-private class {0} {
-    @IsTest private static void testTrigger() {
-          {2}DAN.testHandler(new {1}(Name='test')); 
-    }
-};
