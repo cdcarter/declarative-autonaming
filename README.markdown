@@ -11,6 +11,13 @@ Features Summary
 - Supports Custom Metadata, autonaming rules can be included in Change Sets and Packages for easier deployment
 
 
+Quick Start
+-----------
+Once you've installed the package, use the Autonaming Rules tab to create a naming rule
+<img src="http://media.screensteps.me/bbc-christian/hf4mkx/define-a-naming-rule.png?1464712517"/>
+and see it in action
+<img src="http://media.screensteps.me/bbc-christian/hf4mkx/see-your-rule-work.png?1464712518"/>
+
 Implementation Considerations
 -----------------------------
 
