@@ -205,7 +205,7 @@ public with sharing class DAN_Manage_CTRL {
 			'private class ' + NamingTriggerTestName +  '{\n' +
 			'    @IsTest private static void testTrigger() {\n' +
 			'        // Force the ' + NamingTriggerName + ' to be invoked, fails the test if org config or other Apex code prevents this.\n' +
-			'        ' + (namespace().length() > 0 ? namespace() + '.' : '') + 'DAN.testHandler(new ' + autonamingRule.Object__c + '(Name =\'test\'));\n' +
+			'        ' + (namespace().length() > 0 ? namespace() + '.' : '') + 'DAN.testHandler(\'' + autonamingRule.Object__c + '\');\n' +
 			'    }\n' +
 			'}';
 		}
@@ -310,7 +310,6 @@ public with sharing class DAN_Manage_CTRL {
 	}
 
 	private static void deleteRules(List<String> ruleNames) {
-		// Currently assumes the Id's are Custom Metadata record DeveloperName's
 		CustomMetadataService.deleteMetadata(Autonaming_Rule__mdt.getSObjectType(), ruleNames);
 	}
 
@@ -330,9 +329,7 @@ public with sharing class DAN_Manage_CTRL {
 
 	public static Boolean isMetadataAPIConnected() {
 		try {
-			MetadataService.MetadataPort service = new MetadataService.MetadataPort();
-			service.SessionHeader = new MetadataService.SessionHeader_element();
-			service.SessionHeader.sessionId = UserInfo.getSessionId();
+			MetadataService.MetadataPort service = createService();
 			List<MetadataService.ListMetadataQuery> queries = new List<MetadataService.ListMetadataQuery>();
 			MetadataService.ListMetadataQuery remoteSites = new MetadataService.ListMetadataQuery();
 			remoteSites.type_x = 'RemoteSiteSetting';
@@ -350,7 +347,6 @@ public with sharing class DAN_Manage_CTRL {
 	public String Host {get;set;}
 	public String RemoteSiteName { get { return namespace() + 'mdapi'; } }
 	public String MetadataResponse {get;set;}
-	public String MetadataApiException {get;set;}
 
 	public PageReference displayMetadataResponse() {
 		// Display the response from the client side Metadata API callout
