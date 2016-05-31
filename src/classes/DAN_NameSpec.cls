@@ -9,19 +9,21 @@ public class DAN_NameSpec implements DAN.INameSpec {
     }
     return results;
   }
-  
+
   private static string openToken = '{!';
   private static string closeToken = '}';
-  
+
   @testVisible
   private String processName(DAN.NameSpecRequest request) {
     String result = request.nameSpec;
-    Pattern namePattern = Pattern.compile('\\{![^\\{!]*\\}'); 
+    Pattern namePattern = Pattern.compile('\\{![^\\{!]*\\}');
     Matcher nameMatcher = namePattern.matcher(request.nameSpec);
-    
+
     while (nameMatcher.find()) {
       String field = request.nameSpec.substring(nameMatcher.start() + openToken.length(), nameMatcher.end()-closeToken.length());
       List<String> splitField = (field.split('\\.',0));
+      system.debug("splitfield");
+      system.debug(splitField);
       String fieldName = splitField[splitField.size()-1];
       splitField.remove(splitField.size()-1);
       SObject thisObj = request.instant;
@@ -30,12 +32,12 @@ public class DAN_NameSpec implements DAN.INameSpec {
           thisObj = thisObj.getSObject(parentObj);
         }
       }
-      
+
       String val = getFieldValue(thisObj, fieldName, request);
-      
+
       // add back the {}'s for string substitution
       field = openToken + field + closeToken;
-      if (val == null) {   
+      if (val == null) {
         // eat potential trailing space
         result = result.replace(field + ' ', '');
         // eat potential leading space
@@ -45,16 +47,16 @@ public class DAN_NameSpec implements DAN.INameSpec {
     }
     return result;
   }
-  
+
   @testVisible
   public static string getFieldValue(sObject obj, string fieldName, DAN.NameSpecRequest name) {
     if (obj==null) return null;
     string result = '';
-    
+
     Object val = obj.get(fieldName.trim());
     if (val==null)
     return null;
-    
+
     Schema.DisplayType dt = obj.getSObjectType().getDescribe().fields.getMap().get(fieldName).getDescribe().getType();
     //If this is a Date or DateTime field, use the specified formatting if there is one
     if (dt == Schema.DisplayType.Date || dt == Schema.DisplayType.DateTime) {
