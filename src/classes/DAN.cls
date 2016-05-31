@@ -92,14 +92,8 @@ global class DAN {
     
     @testVisible private static List<NameRule> selectorWrapper(List<Autonaming_Rule__mdt> mdts) {
       List<NameRule> result = new List<NameRule>();
-      if(Test.isRunningTest()) {
-        NameRule rule = new NameRule();
-        rule.obj = 'Account';rule.nameField = 'Name';rule.nameSpec='test';rule.nameSpecProcessor='DAN_NameSpec'; 
-        result.add(rule);
-      } else {
-        for(Autonaming_Rule__mdt rule : mdts) {
-          result.add(new NameRule(rule));
-        }
+      for(Autonaming_Rule__mdt rule : mdts) {
+        result.add(new NameRule(rule));
       }
       return result;
     }
