@@ -53,6 +53,7 @@
     </types>
     <types>
         <members>jszip</members>
+        <members>metadata</members>
         <name>StaticResource</name>
     </types>
     <version>35.0</version>
