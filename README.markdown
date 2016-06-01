@@ -30,6 +30,8 @@ NameSpec
 --------
 The default NameSpec Processor, `DAN_NameSpec` is based on the [Nonprofit Starter Pack](http://github.com/SalesforceFoundation/Cumulus) Opportunity Naming Engine. The format uses full API names and is roughly like merge fields. `{!FieldName__c} - {!OtherObject__r.Field__c}`. Anything not in `{!}` tags will get printed verbatim. Dates and Currencies will be automatically formatted to your locale.
 
+Edits to the NameSpec do not require you to redeploy the trigger. They will just exist for all saves going forward. Batch updating is on the roadmap (safe harbor).
+
 Future Features
 ---------------
 This is very alpha software right now, but my next big feature will hopefully be filtering which objects get renamed/allowing multiple rules per object.
