@@ -18,6 +18,23 @@ Once you've installed the package, use the Autonaming Rules tab to create a nami
 and see it in action
 <img src="http://media.screensteps.me/bbc-christian/hf4mkx/see-your-rule-work.png?1464712518"/>
 
+You'll need to give your rule both a name and a unique name the unique name needs to be a) unique and b) formatted_like_this.
+
+Then, enter the API Name of the Object you want autonaming to apply to, and the API name of the field you would like to populate (usually just "Name").
+
+Leave the NameSpec Processor as is, and tick the active box, which just leaves the NameSpec (see below).
+
+Hit Manage Child Trigger, and then Deploy! After that, any edit to an object of your type will cause an auto rename.
+
+NameSpec
+--------
+The default NameSpec Processor, `DAN_NameSpec` is based on the [Nonprofit Starter Pack](http://github.com/SalesforceFoundation/Cumulus) Opportunity Naming Engine. The format uses full API names and is roughly like merge fields. `{!FieldName__c} - {!OtherObject__r.Field__c}`. Anything not in `{!}` tags will get printed verbatim. Dates and Currencies will be automatically formatted to your locale.
+
+Future Features
+---------------
+This is very alpha software right now, but my next big feature will hopefully be filtering which objects get renamed/allowing multiple rules per object.
+
+
 Implementation Considerations
 -----------------------------
 
