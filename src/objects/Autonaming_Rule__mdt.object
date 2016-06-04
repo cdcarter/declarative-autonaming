@@ -5,16 +5,36 @@
         <fullName>Active__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <fieldManageability>DeveloperControlled</fieldManageability>
+        <fieldManageability>SubscriberControlled</fieldManageability>
         <inlineHelpText>Autonaming will only run on active naming rules</inlineHelpText>
         <label>Active</label>
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Filter_Field__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>Filter Field</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Filter_Value__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>Filter Value</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>NameSpec_Processor__c</fullName>
         <defaultValue>&quot;DAN_Namespec&quot;</defaultValue>
         <externalId>false</externalId>
-        <fieldManageability>DeveloperControlled</fieldManageability>
+        <fieldManageability>SubscriberControlled</fieldManageability>
         <inlineHelpText>Name of the Apex Class that will provide NameSpec parsing and resolution.</inlineHelpText>
         <label>NameSpec Processor</label>
         <length>255</length>
@@ -24,10 +44,11 @@
     </fields>
     <fields>
         <fullName>Name_Spec__c</fullName>
+        <defaultValue>&quot;Account.Name - CloseDate&quot;</defaultValue>
         <description>Name spec currently supports {!FieldName__c} syntax and that is it.</description>
         <externalId>false</externalId>
-        <fieldManageability>DeveloperControlled</fieldManageability>
-        <inlineHelpText>The namespec formatted name template. See the docs for help with namespecs.</inlineHelpText>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>Name spec currently supports {!FieldName__c} syntax and that is it.</inlineHelpText>
         <label>Name Spec</label>
         <length>255</length>
         <required>true</required>
@@ -38,7 +59,7 @@
         <fullName>Naming_Result_Field__c</fullName>
         <defaultValue>&quot;Name&quot;</defaultValue>
         <externalId>false</externalId>
-        <fieldManageability>DeveloperControlled</fieldManageability>
+        <fieldManageability>SubscriberControlled</fieldManageability>
         <inlineHelpText>The API name of the field to populate with the autoname.</inlineHelpText>
         <label>Naming Result Field</label>
         <length>255</length>
@@ -49,7 +70,7 @@
     <fields>
         <fullName>Object__c</fullName>
         <externalId>false</externalId>
-        <fieldManageability>DeveloperControlled</fieldManageability>
+        <fieldManageability>SubscriberControlled</fieldManageability>
         <inlineHelpText>The name of the object that this naming rule runs on</inlineHelpText>
         <label>Object</label>
         <length>80</length>

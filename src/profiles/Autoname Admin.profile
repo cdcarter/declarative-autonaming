@@ -34,6 +34,16 @@
         <field>Autonaming_Rule__mdt.Active__c</field>
         <readable>false</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Autonaming_Rule__mdt.Filter_Field__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Autonaming_Rule__mdt.Filter_Value__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
     <layoutAssignments>
         <layout>Autonaming_Rule__mdt-Autonaming Rule Layout</layout>
     </layoutAssignments>

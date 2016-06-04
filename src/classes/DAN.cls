@@ -13,112 +13,86 @@ global class DAN {
         public String name;
         public Id objectId;
     }
-
+    
     // core interface for naming implementations to implement
     global interface INameSpec {
         List<DAN.NameSpecResult> autoname(List<DAN.NameSpecRequest> reqs);
     }
-
+    
     /* ***************************************************************
-     *  Trigger handler and test methods for use by deployed triggers
-     * *************************************************************** */
-
+*  Trigger handler and test methods for use by deployed triggers
+* *************************************************************** */
+    
     private static Boolean triggerHandlerInvoked = false;
     private static Boolean inTrigger = false;
-
+    
     // only exported method for triggers to use
     global static void handleAfterTrigger(List<SObject> objects) {
-       	if(!DAN.inTrigger){
-        	DAN.inTrigger = true;
-			    renameAndUpdate(objects);
-          DAN.inTrigger = false;
-          DAN.triggerHandlerInvoked = true;
+        if(!DAN.inTrigger){
+            DAN.inTrigger = true;
+            renameAndUpdate(objects);
+            DAN.inTrigger = false;
+            DAN.triggerHandlerInvoked = true;
         }
     }
-
+    
     global static void testHandler(String objString) {
-      Schema.SObjectType objType = Schema.getGlobalDescribe().get(objString);
-      try {
-        SObject testRecord = objType.newSObject(null,true);
-        testRecord.put('Name','anythngbutthis');
-        if(objString == 'Opportunity') {
-          testRecord.put('StageName','Posted');
-          testRecord.put('CloseDate',Date.today());
+        Schema.SObjectType objType = Schema.getGlobalDescribe().get(objString);
+        try {
+            SObject testRecord = objType.newSObject(null,true);
+            testRecord.put('Name','anythngbutthis');
+            if(objString == 'Opportunity') {
+                testRecord.put('StageName','Posted');
+                testRecord.put('CloseDate',Date.today());
+            }
+            insert testRecord;
+            system.assertNotEquals('anythingButThis',(String)testRecord.get('Name'));
+        } catch (Exception e) {
+            if(triggerHandlerInvoked) return; // throw away errors if the trigger ran.
+            throw e;
         }
-        insert testRecord;
-        system.assertNotEquals('anythingButThis',(String)testRecord.get('Name'));
-      } catch (Exception e) {
-        if(triggerHandlerInvoked) return; // throw away errors if the trigger ran.
-        throw e;
-      }
     }
-
+    
     /* ***************************************************************
-     *  Rule Assignment and Renaming
-     * *************************************************************** */
-
-    private static Map<String,List<Database.SaveResult>> renameAndUpdate(List<SObject> objects) {
-        Map<String,List<Database.SaveResult>> retval = new Map<String,List<Database.SaveResult>>();
-        Map<NameRule,List<SObject>> ruleMap = getObjectsByRule(objects);
-        Map<String,List<SObject>> results = new Map<String,List<SObject>>();
-        for(NameRule rule : ruleMap.keySet()) {
-            if(!results.containsKey(rule.obj)) {
-                results.put(rule.obj,new List<SObject>());
+*  Rule Assignment and Renaming
+* *************************************************************** */
+    
+    private static List<Database.SaveResult> renameAndUpdate(List<SObject> objects) {
+        if(objects.size() > 0) {
+            List<Database.SaveResult> retval = new List<Database.SaveResult>();
+            List<NameRule> rules = getRules(objects[0].getSObjectType().getDescribe().getName());
+            List<SObject> results = new List<SObject>();
+            for(NameRule rule : rules) {
+                results.addAll(getResults(rule,objects));
             }
-            results.get(rule.obj).addAll(getResults(rule,ruleMap.get(rule)));
+            retval.addAll(Database.update(results));
+            return retval;
         }
-        for(String objType : results.keySet()) {
-            retval.put(objType,Database.update(results.get(objType)));
-        }
-        return retval;
+        return null;
     }
-
-    private static Map<NameRule,List<SObject>> getObjectsByRule(List<SObject> objs) {
-        Map<String, List<SObject>> objectMap = new Map<String, List<SObject>>();
-    	  Map<String, NameRule> ruleMap = new Map<String, NameRule>();
-        Set<String> objNames = new Set<String>();
-        for(SObject obj : objs) {
-            objNames.add(obj.getSObjectType().getDescribe().getName());
-        }
-        for(NameRule rule : getRules(objNames)) {
-          objectMap.put(rule.obj,new List<SObject>());
-          ruleMap.put(rule.obj,rule);
-        }
-        for(SObject obj : objs) {
-            String objName = obj.getSObjectType().getDescribe().getName();
-            if(objectMap.containsKey(objName)) {
-                objectMap.get(objName).add(obj);
-            }
-        }
-        Map<NameRule,List<SObject>> result = new Map<NameRule,List<SObject>>();
-        for(String obj : objNames) {
-            result.put(ruleMap.get(obj),objectMap.get(obj));
+    
+    private static List<NameRule> getRules(String objname) {
+        return selectorWrapper([SELECT Id, DeveloperName,Label,Active__c, Name_Spec__c, NameSpec_Processor__c, Naming_Result_Field__c,Filter_Field__c,Filter_Value__c , Object__c FROM Autonaming_Rule__mdt WHERE Active__c = true AND Object__c = :objName]);
+    }
+    
+    private static List<NameRule> selectorWrapper(List<Autonaming_Rule__mdt> mdts) {
+        List<NameRule> result = new List<NameRule>();
+        for(Autonaming_Rule__mdt rule : mdts) {
+            result.add(new NameRule(rule));
         }
         return result;
     }
-
-    private static List<NameRule> getRules(Set<String> objnames) {
-      return selectorWrapper([SELECT Id, DeveloperName,Label,Active__c, Name_Spec__c, NameSpec_Processor__c, Naming_Result_Field__c, Object__c FROM Autonaming_Rule__mdt WHERE Active__c = true AND Object__c IN :objNames]);
-    }
-
-    private static List<NameRule> selectorWrapper(List<Autonaming_Rule__mdt> mdts) {
-      List<NameRule> result = new List<NameRule>();
-      for(Autonaming_Rule__mdt rule : mdts) {
-        result.add(new NameRule(rule));
-      }
-      return result;
-    }
-
+    
     /* ***************************************************************
-     *  Name processing dispatch and result handling
-     * *************************************************************** */
-
+*  Name processing dispatch and result handling
+* *************************************************************** */
+    
     private static List<SObject> getResults(NameRule rule,List<SObject> objs) {
         Type processorType = Type.forName(rule.nameSpecProcessor);
-		    INameSpec processor = (INameSpec)processorType.newInstance();
+        INameSpec processor = (INameSpec)processorType.newInstance();
         List<NameSpecRequest> reqs = reqsFromObjects(rule,objs);
         List<NameSpecResult> processorResults = processor.autoname(reqs);
-
+        
         SObjectType objType = Schema.getGlobalDescribe().get(rule.obj);
         List<SObject> result = new List<SObject>();
         for(NameSpecResult res : processorResults) {
@@ -129,29 +103,34 @@ global class DAN {
         }
         return result;
     }
-
+    
     private static List<NameSpecRequest> reqsFromObjects(NameRule rule, List<SObject> objs) {
         List<NameSpecRequest> reqs = new List<NameSpecRequest>();
         for(SObject obj : objs) {
-            NameSpecRequest req = new NameSpecRequest(rule,obj);
-            reqs.add(req);
+            if((obj.get(rule.filterField) == null)||(obj.get(rule.filterField) == rule.filterValue)) {
+                NameSpecRequest req = new NameSpecRequest(rule,obj);
+                reqs.add(req);
+            }
         }
         return reqs;
     }
-
+    
     private class NameRule {
-      public Boolean active;
-      public String obj;
-      public String nameField;
-      public String nameSpec;
-      public String nameSpecProcessor;
-      public Id id;
-      public String DeveloperName;
-      public NameRule() {}
-      public NameRule(Autonaming_Rule__mdt rule) {
-        active = rule.Active__c; obj = rule.Object__c; nameField = rule.Naming_Result_Field__c;
-        nameSpec = rule.Name_Spec__c; nameSpecProcessor = rule.NameSpec_Processor__c;
-        id = rule.Id; developerName = rule.developerName;
-      }
+        public Boolean active;
+        public String obj;
+        public String nameField;
+        public String nameSpec;
+        public String nameSpecProcessor;
+        public Id id;
+        public String DeveloperName;
+        public String filterField;
+        public String filterValue;
+        public NameRule() {}
+        public NameRule(Autonaming_Rule__mdt rule) {
+            active = rule.Active__c; obj = rule.Object__c; nameField = rule.Naming_Result_Field__c;
+            nameSpec = rule.Name_Spec__c; nameSpecProcessor = rule.NameSpec_Processor__c;
+            id = rule.Id; developerName = rule.developerName; filterField = rule.Filter_Field__c;
+            filterValue = rule.Filter_Value__c;
+        }
     }
 }

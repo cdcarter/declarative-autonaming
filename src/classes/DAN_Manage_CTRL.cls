@@ -314,15 +314,15 @@ public with sharing class DAN_Manage_CTRL {
 	}
 
 	public static Autonaming_Rule__mdt getRuleById(Id i) {
-		return [SELECT Id, DeveloperName,Label,Active__c, Name_Spec__c, NameSpec_Processor__c, Naming_Result_Field__c, Object__c FROM Autonaming_Rule__mdt WHERE Id = :i LIMIT 1];
+		return [SELECT Id, DeveloperName,Label,Active__c, Name_Spec__c, NameSpec_Processor__c, Naming_Result_Field__c, Filter_Field__c ,Filter_Value__c , Object__c FROM Autonaming_Rule__mdt WHERE Id = :i LIMIT 1];
 	}
 
 	public static Autonaming_Rule__mdt getRuleByDeveloperName(String devName) {
-		return [SELECT Id, DeveloperName,Label,Active__c, Name_Spec__c, NameSpec_Processor__c, Naming_Result_Field__c, Object__c FROM Autonaming_Rule__mdt WHERE DeveloperName = :devName LIMIT 1];
+		return [SELECT Id, DeveloperName,Label,Active__c, Name_Spec__c, NameSpec_Processor__c, Naming_Result_Field__c, Filter_Field__c ,Filter_Value__c ,Object__c FROM Autonaming_Rule__mdt WHERE DeveloperName = :devName LIMIT 1];
 	}
 
 	public static List<Autonaming_Rule__mdt> getAllRules() {
-		return [SELECT Id, DeveloperName,Label,Active__c, Name_Spec__c, NameSpec_Processor__c, Naming_Result_Field__c, Object__c FROM Autonaming_Rule__mdt];
+		return [SELECT Id, DeveloperName,Label,Active__c, Name_Spec__c, NameSpec_Processor__c, Naming_Result_Field__c, Filter_Field__c ,Filter_Value__c ,Object__c FROM Autonaming_Rule__mdt];
 	}
 
 	public static Exception LastMetadataAPIConnectionException {get; private set;}

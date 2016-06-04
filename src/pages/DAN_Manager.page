@@ -72,7 +72,7 @@ function createRemoteSite()
 					<apex:commandButton value="Delete" action="{!deleteX}" rendered="{!autonamingRule.Id!=null}"/>
 					<apex:commandButton value="Manage Child Trigger" action="{!URLFOR($Page.DAN_ManageTrigger, null, ['id'=autonamingRule.id])}" rendered="{!autonamingRule.Id!=null}"/>
 				</apex:pageBlockButtons>
-				<apex:pageBlockSection title="Information" columns="2">
+				<apex:pageBlockSection title="Information" columns="1">
 					<apex:pageBlockSectionItem >
 						<apex:outputLabel value="Autonaming Rule Name"/>
 						<apex:outputPanel >
@@ -118,12 +118,21 @@ function createRemoteSite()
 							</div>
 						</apex:outputPanel>
 					</apex:pageBlockSectionItem>
-					<apex:pageBlockSectionItem helpText="{!$ObjectType.Autonaming_Rule__mdt.fields.NameSpec_Processor__c.inlineHelpText}">
-					<apex:outputLabel value="{!$ObjectType.Autonaming_Rule__mdt.fields.NameSpec_Processor__c.Label}"/>
+					<apex:pageBlockSectionItem helpText="{!$ObjectType.Autonaming_Rule__mdt.fields.Filter_Field__c.inlineHelpText}">
+					<apex:outputLabel value="{!$ObjectType.Autonaming_Rule__mdt.fields.Filter_Field__c.Label}"/>
 						<apex:outputPanel >
 							<div class="requiredInput">
 								<div class="requiredBlock"/>
-								<apex:inputText size="32" value="{!autonamingRule.NameSpec_Processor__c}"/>
+								<apex:inputText size="32" value="{!autonamingRule.Filter_Field__c}"/>
+							</div>
+						</apex:outputPanel>
+					</apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem helpText="{!$ObjectType.Autonaming_Rule__mdt.fields.Filter_Value__c.inlineHelpText}">
+					<apex:outputLabel value="{!$ObjectType.Autonaming_Rule__mdt.fields.Filter_Value__c.Label}"/>
+						<apex:outputPanel >
+							<div class="requiredInput">
+								<div class="requiredBlock"/>
+								<apex:inputText size="32" value="{!autonamingRule.Filter_Value__c}"/>
 							</div>
 						</apex:outputPanel>
 					</apex:pageBlockSectionItem>
@@ -137,4 +146,3 @@ function createRemoteSite()
 	</apex:form>
 </body>
 </apex:page>
-
